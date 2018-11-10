@@ -1,0 +1,72 @@
+<div class="row">
+    <div class="col-sm-8"><h2>Lista de tareas</h2></div>
+    <div class="col-sm-4" style="padding-top: 20px">
+        <a href="<?php echo APP_URL."tareas/agregar"; ?>" >
+            <button type="button" class="btn btn-primary add">
+                <span class="glyphicon glyphicon-plus"></span> Tarea
+            </button>
+        </a>
+        <a href="<?php echo APP_URL."categorias/agregar"; ?>">
+            <button type="button" class="btn btn-primary add">
+                <span class="glyphicon glyphicon-plus"></span> Categoría
+            </button>
+        </a>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Fecha</th>
+            <th>Prioridad</th>
+            <!--<th>Status</th>-->
+            <th>Categoria</th>
+            <th>Acción</th>
+        </tr>
+    <?php foreach ($this->tareas as $tarea): ?>
+        <tr>
+            <td><?php echo $tarea["tareas"]["id"]; ?></td>
+            <td><?php
+                    if ($tarea["tareas"]["status"]==0):
+                        echo "<s>".$tarea["tareas"]["nombre"]."</s>";
+                    else:
+                        echo $tarea["tareas"]["nombre"];
+                    endif;
+                    ?>
+            </td>
+            <td><?php
+                $date = new DateTime($tarea["tareas"]["fecha"]);
+                echo $date->format('d/m/Y');
+                //echo $tarea["tareas"]["fecha"]; ?></td>
+            <td><?php
+                if ($tarea["tareas"]["prioridad"]<=3){
+                    echo "<span class='label label-success'>Baja&nbsp&nbsp&nbsp</span>";
+                } elseif ($tarea["tareas"]["prioridad"]<=6){
+                    echo "<span class='label label-warning'>Media</span>";
+                } elseif ($tarea["tareas"]["prioridad"]<=10){
+                    echo "<span class='label label-danger'>Alta&nbsp&nbsp&nbsp<nbsp></nbsp></span>";
+                }
+
+                //echo $tarea["tareas"]["prioridad"]; ?></td>
+            <!--<td><?php
+                /*if ($tarea["status"]==1){
+                    echo "Activo";
+                    //echo $tarea["status"];
+                }else{
+                    echo "Finalizado";
+                }*/ ?></td>-->
+            <td><?php echo $tarea["categorias"]["nombre"]; ?></td>
+            <td> <a href="<?php echo APP_URL."tareas/editar/".$tarea["tareas"]["id"]; ?>"><span class="glyphicon glyphicon-edit"></span></a>
+                <a href="<?php echo APP_URL."tareas/eliminar/".$tarea["tareas"]["id"]; ?>"><span class="glyphicon glyphicon-trash"></span></a>
+                <?php
+                    if ($tarea["tareas"]["status"]==1){ ?>
+                        <a href="<?php echo APP_URL."tareas/cambiarEstado/".$tarea["tareas"]["id"]."/off"; ?>"><span class="glyphicon glyphicon-ok"></span></a></td>
+                <?php  }elseif ($tarea["tareas"]["status"]==0){ ?>
+                        <a href="<?php echo APP_URL."tareas/cambiarEstado/".$tarea["tareas"]["id"]."/on"; ?>"><span class="glyphicon glyphicon-remove"></span></a></td>
+                <?php  } ?>
+        </tr>
+    <?php endforeach; ?>
+
+    </table>
+</div>

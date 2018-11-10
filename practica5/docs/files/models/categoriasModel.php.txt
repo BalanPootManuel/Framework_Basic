@@ -1,0 +1,12 @@
+<?php
+
+class CategoriasModel extends AppModel
+{
+    private static $nombre = "categorias";
+
+    public function listarCategorias(){
+        $categorias = $this->_db->query("SELECT * FROM categorias");
+
+        return $categorias->fetchall();
+    }
+}
